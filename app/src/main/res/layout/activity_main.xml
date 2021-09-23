@@ -27,16 +27,5 @@
         />
     <!--Button required self closing tag other wise gave
      error XML tag has empty body-->
-    <!--week two added extra lines-->
-
-
-
-
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
