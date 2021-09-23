@@ -23,10 +23,32 @@
 
     <EditText
         android:id="@+id/myEditText"
+        android:inputType="text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/editMessage"
         android:hint="@string/hintText"
+    />
+
+    <CheckBox
+        android:id="@+id/boxChecked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkedText"
+    />
+
+    <Switch
+        android:id="@+id/toggled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switchText"
+    />
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/radioText"
     />
 
 </LinearLayout>

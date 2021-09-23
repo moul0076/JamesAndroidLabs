@@ -5,5 +5,7 @@
     <string name="button_message">I\'m a button</string>
     <string name="editMessage">I\'m an EditText</string>
     <string name="hintText">Write something here</string>
-
+    <string name="checkedText">Should i be on or off?</string>
+    <string name="switchText">Should i be on or off?</string>
+    <string name="radioText">Have you used an actual Radio?</string>
 </resources>
