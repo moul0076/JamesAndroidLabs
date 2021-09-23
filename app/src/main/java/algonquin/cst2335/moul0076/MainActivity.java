@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         TextView myText = findViewById(R.id.textview);
         myText.setText("Java put this here");
 
-        Button btn = findViewById(R.id.mybutton);
+        Button btn = findViewById(R.id.myButton);
         //btn.setText("the view was previous" + oldText);
 
         EditText myedit = findViewById(R.id.myEditText);
@@ -71,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        ImageView collegeLogo = findViewById(R.id.collegeLogo);
+        ImageButton myImageButton = findViewById(R.id.myImageButton);
+
+        myImageButton.setOnClickListener( (vw) -> {
+            int width = myImageButton.getWidth();
+            int height = myImageButton.getHeight();
+
+            Toast.makeText(MainActivity.this,"The width = " + width + " and height = " + height, Toast.LENGTH_LONG).show();
+        });
 
     }
 
