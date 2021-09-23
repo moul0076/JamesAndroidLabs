@@ -3,4 +3,7 @@
     <string name="app_name">James\' Android Labs</string>
     <string name="hello_message">Hellow World!</string>
     <string name="button_message">I\'m a button</string>
+    <string name="editMessage">editable text ya\'al</string>
+    <string name="hintText">Write something here</string>
+
 </resources>
