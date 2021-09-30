@@ -6,7 +6,7 @@ import android.widget.Switch;
 import android.widget.ImageView;
 import android.view.animation.RotateAnimation;
 import android.view.animation.LinearInterpolator;
-//import android.widget.ViewAnimator;
+import android.view.animation.Animation;
 
 import android.os.Bundle;
 //RELATIVE_TO_SELF
