@@ -2,5 +2,9 @@
     <string name="app_name">James\' Android Labs</string>
     <string name="hello_message">Sup World!</string>f
     <string name="button_message">I\'m a button</string>
+    <string name="spin_message">Spin Flag</string>
+    <string name="button1">Button</string>
+    <string name="button2">Button</string>
+    <string name="button3">Button</string>
 
 </resources>
