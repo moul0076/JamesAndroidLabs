@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">James\' Android Labs</string>
-    <string name="hello_message">Hellow World!</string>
-    <string name="button_message">I\'m a button</string>
+
+    <string name="button_message">LOGIN</string>
+    <string name="EmailTextLabel">Enter your Email address</string>
+    <string name="EmailHint">Type email here</string>
+    <string name="PasswordTextLabel">Type email here</string>
+
+    <string name="secondActivityTitle">TextView</string>
+    <string name="callButtonLabel">CALL NUMBER</string>
+    <string name="changeButtonLabel">CHANGE PICTURE</string>
+    <string name="pictureImage">Picture Image</string>
 </resources>

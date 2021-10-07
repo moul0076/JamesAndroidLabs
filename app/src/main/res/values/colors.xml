@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="my_primary">#4CAF50</color>
+    <color name="my_primary">#8D8D8F</color>
     <color name="my_secondary">#3F51B5</color>
     <color name="my_status_bar">#FFEB3B</color>
 
-    <color name="my_text">#EA0000</color>
+    <color name="my_text">#FF000000</color>
 f
     <color name="my_primary_night">#255327</color>
     <color name="my_secondary_night">#293370</color>
     <color name="my_status_bar_night">#958922</color>
 
     <color name="black">#FF000000</color>
+    <color name="blue">#3544CD</color>
     <color name="white">#FFFFFFFF</color>
 
 </resources>

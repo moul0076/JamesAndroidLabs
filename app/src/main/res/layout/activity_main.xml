@@ -7,24 +7,61 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/EmailLabelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_message"
+        android:text="@string/EmailTextLabel"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.048" />
 
-    <Button
+    <EditText
+        android:id="@+id/EmailTextBox"
+        android:layout_width="300dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="@string/EmailHint"
+        app:layout_constraintStart_toStartOf="@+id/EmailLabelText"
+        app:layout_constraintTop_toBottomOf="@+id/EmailLabelText"
+        android:importantForAutofill="no" />
+
+    <TextView
+        android:id="@+id/PassLabelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/PasswordTextLabel"
+        app:layout_constraintStart_toStartOf="@+id/EmailTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/EmailTextBox" />
+
+    <EditText
+        android:id="@+id/PassTextBox"
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/EmailTextBox"
+        app:layout_constraintStart_toStartOf="@+id/EmailTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/PassLabelText"
+        android:importantForAutofill="no" />
+
+    <Button
+        android:id="@+id/LoginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/button_message"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="@+id/PassTextBox"
+        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintStart_toStartOf="@+id/PassTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/PassTextBox" />
+
+
     <!--Button required self closing tag other wise gave
      error XML tag has empty body-->
 
