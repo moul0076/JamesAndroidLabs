@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "James' Android Labs"
 include ':app'
+include ':dynamicfeature'
