@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.util.Log;
-import android.view.View.OnClickListener;
+import android.view.View;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Button;
+import android.widget.ImageView;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,23 +24,14 @@ public class MainActivity extends AppCompatActivity {
     @Override // called first
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         Log.i( TAG, "In onCreate() - Loading Widgets" );
 
         setContentView(R.layout.activity_main);
+        //----------------------------------------
 
-        loginEmail = findViewById(R.id.EmailTextBox);
-        loginPass = findViewById(R.id.PassTextBox);
 
-        loginButton = findViewById(R.id.LoginButton);
-
-        loginButton.setOnClicklistener(( click ) ->
-        {
-
-            Intent nextPage = new Intent(MainActivity.this, SecondActivity.class);
-        });
-
+        //------------------------------------------
     }
 
     @Override //screen is visible but not responding
