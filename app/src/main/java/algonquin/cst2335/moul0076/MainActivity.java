@@ -27,13 +27,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EditText loginEmail = findViewById(R.id.EmailTextBox);
+
         EditText loginPass = findViewById(R.id.PassTextBox);
         Button loginButton = findViewById(R.id.LoginButton);
 
-        loginButton.setOnClicklistener(( click ) ->
-        {
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            Intent nextPage = new Intent(MainActivity.this, SecondActivity.class);
+                Intent nextPage = new Intent(MainActivity.this, SecondActivity.class);
+                Intent: nextPage.putExtra( "EmailAddress", loginEmail.getText().toString() );
+                startActivity( nextPage );
+            }
         });
 
 
