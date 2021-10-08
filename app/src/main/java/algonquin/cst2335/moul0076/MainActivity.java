@@ -15,7 +15,9 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     public final static String TAG = "MainActivity";
-
+    EditText logninEmail;
+    EditText logninPass;
+    Button loginButton;
 
     @Override // called first
     protected void onCreate(Bundle savedInstanceState)
@@ -26,11 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        EditText logninEmail = new EditText();
         loginEmail = findViewById(R.id.EmailTextBox);
-        EditText loginPass - new EditText();
         loginPass = findViewById(R.id.PassTextBox);
-        Button loginButton = findViewById(R.id.LoginButton);
+
+        loginButton = findViewById(R.id.LoginButton);
 
         loginButton.setOnClicklistener(( click ) ->
         {
