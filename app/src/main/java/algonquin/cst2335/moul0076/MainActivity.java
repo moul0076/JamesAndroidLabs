@@ -17,9 +17,6 @@ import android.widget.ImageView;
 public class MainActivity extends AppCompatActivity {
 
     public final static String TAG = "MainActivity";
-    EditText logninEmail;
-    EditText logninPass;
-    Button loginButton;
 
     @Override // called first
     protected void onCreate(Bundle savedInstanceState)
@@ -28,10 +25,18 @@ public class MainActivity extends AppCompatActivity {
         Log.i( TAG, "In onCreate() - Loading Widgets" );
 
         setContentView(R.layout.activity_main);
-        //----------------------------------------
+
+        EditText loginEmail = findViewById(R.id.EmailTextBox);
+        EditText loginPass = findViewById(R.id.PassTextBox);
+        Button loginButton = findViewById(R.id.LoginButton);
+
+        loginButton.setOnClicklistener(( click ) ->
+        {
+
+            Intent nextPage = new Intent(MainActivity.this, SecondActivity.class);
+        });
 
 
-        //------------------------------------------
     }
 
     @Override //screen is visible but not responding
