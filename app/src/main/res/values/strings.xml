@@ -10,7 +10,9 @@
     <string name="callButtonLabel">CALL NUMBER</string>
     <string name="changeButtonLabel">CHANGE PICTURE</string>
     <string name="pictureImage">Picture Image</string>
-    <string name="title_dynamicfeature">Death Knights Squire</string>
+    <string name="sendButton">SEND</string>
+    <string name="receiveButton">RECEIVE</string>
+    <string name="autoFillHint">Message</string>
 
 
 </resources>
