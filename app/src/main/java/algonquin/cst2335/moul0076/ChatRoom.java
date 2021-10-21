@@ -9,9 +9,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class ChatRoom extends AppCompatActivity
 
 
     ArrayList<ChatMessage> messages = new ArrayList<>();
+
+    MyChatAdapter adt = new MyChatAdapter();
 
 
 
@@ -45,7 +50,6 @@ public class ChatRoom extends AppCompatActivity
 
         chatList.setLayoutManager(new LinearLayoutManager(this));
 
-        MyChatAdapter adt = new MyChatAdapter();
         chatList.setAdapter(adt);
         chatList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -99,6 +103,35 @@ public class ChatRoom extends AppCompatActivity
 
         public MyRowViews( View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener( click ->
+            {
+                int position = getAbsoluteAdapterPosition();
+                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
+
+
+                builder.setMessage( "Do you want to delete the message: " + messageText.getText() );
+                builder.setTitle("Question:");
+                builder.setNegativeButton("No",(dialog, cl) -> { });
+                builder.setPositiveButton("Yes",(dialog, cl) ->
+                    {
+                        ChatMessage removedMessages = messages.get(position);
+                        messages.remove(position);
+                        adt.notifyItemRemoved(position);
+
+                        Snackbar.make(messageText, "You Deleted Message #" + position, Snackbar.LENGTH_LONG)
+                                .setAction("UNDO", clk ->
+                                {
+                                    messages.add(position, removedMessages);
+                                    adt.notifyItemInserted(position);
+                                } )
+                                .show();
+                    });
+                builder.create().show();
+
+            }
+            );
+
             messageText = itemView.findViewById(R.id.message);
             timeText = itemView.findViewById(R.id.time);
         }
