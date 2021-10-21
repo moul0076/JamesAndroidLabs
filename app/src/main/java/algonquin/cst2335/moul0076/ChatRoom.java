@@ -21,6 +21,7 @@ public class ChatRoom extends AppCompatActivity
     Button receiveButton;
     EditText chatMessage;
     RecyclerView chatList;
+    //MyChatAdapter theAdapter;
 
 
 
@@ -29,12 +30,33 @@ public class ChatRoom extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.chatlayout);
+
         chatList = findViewById(R.id.myrecycler);
         chatList.setAdapter(new MyChatAdapter()  );
 
         sendButton = findViewById(R.id.sendButton);
         receiveButton = findViewById(R.id.receiveButton);
-        //sendButton.setOnClickListener ( click -> );
+        chatMessage = findViewById(R.id.chatText);
+
+        sendButton.setOnClickListener(click ->{
+            String whatIsTyped = chatMessage.getText().toString();
+            Date timeNow = new Date();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+
+            String currentDateandTime = sdf.format(timeNow);
+
+            //adding a new message to our history
+            //TODO messages???
+            //messages.add( new Message(whatIsTyped, currentDateandTime) );
+
+            ///* 1 for Send, 2 for Receive */
+            ChatMessage thisMessage = new ChatMessage( whatIsTyped, 1, currentDateandTime );
+
+            chatMessage.setText( "" );
+        });
+
+        //the
     }
 
     private class MyRowViews extends RecyclerView.ViewHolder
@@ -67,8 +89,7 @@ public class ChatRoom extends AppCompatActivity
             holder.messageText.setText( "" );
             holder.timeText.setText( "" );
 
-            ///* 1 for Send, 2 for Receive */
-            ChatMessage thisMessage = new ChatMessage( "message goes here", 1, "time goes here" );
+
         }
 
         @Override
