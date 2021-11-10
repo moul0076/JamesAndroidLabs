@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
@@ -162,7 +163,6 @@ public class ChatRoom extends AppCompatActivity
         {
             holder.messageText.setText( messages.get(position).getMessage() );
             holder.timeText.setText( messages.get(position).getTimeSent() );
-
         }
 
         @Override
