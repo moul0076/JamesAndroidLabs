@@ -33,8 +33,6 @@ public class ChatRoom extends AppCompatActivity
 
     MyChatAdapter adt = new MyChatAdapter();
 
-
-
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +45,8 @@ public class ChatRoom extends AppCompatActivity
         sendButton = findViewById(R.id.sendButton);
         receiveButton = findViewById(R.id.receiveButton);
         chatMessage = findViewById(R.id.chatText);
+
+        MyOpenHelper opener = new MyOpenHelper();
 
         chatList.setLayoutManager(new LinearLayoutManager(this));
 
