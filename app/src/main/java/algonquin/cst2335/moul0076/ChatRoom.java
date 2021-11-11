@@ -35,7 +35,7 @@ public class ChatRoom extends AppCompatActivity
     ArrayList<ChatMessage> messages = new ArrayList<>();
     MyChatAdapter adt = new MyChatAdapter();
     RecyclerView chatList;
-
+    SQLiteDatabase db;
 
 
     @Override
@@ -45,7 +45,9 @@ public class ChatRoom extends AppCompatActivity
         setContentView(R.layout.chatlayout);
 
         MyOpenHelper opener = new MyOpenHelper(this);
-        SQLiteDatabase db = opener.getWritableDatabase();
+        //SQLiteDatabase db = this.db;
+        db = opener.getWritableDatabase();
+
         Cursor result = db.rawQuery( "Select * from " +MyOpenHelper.TABLE_NAME + ";", null);
 
         int _idCol = result.getColumnIndex( "_id");
@@ -137,6 +139,7 @@ public class ChatRoom extends AppCompatActivity
         public MyRowViews( View itemView) {
             super(itemView);
 
+
             itemView.setOnClickListener( click ->
             {
                 int position = getAbsoluteAdapterPosition();
@@ -151,12 +154,21 @@ public class ChatRoom extends AppCompatActivity
                         ChatMessage removedMessages = messages.get(position);
                         messages.remove(position);
                         adt.notifyItemRemoved(position);
+                        db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[] { Long.toString( removedMessages.getId() ) } );
 
                         Snackbar.make(messageText, "You Deleted Message #" + position, Snackbar.LENGTH_LONG)
                                 .setAction("UNDO", clk ->
                                 {
                                     messages.add(position, removedMessages);
                                     adt.notifyItemInserted(position);
+
+                                    /* */
+                                    db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME +
+                                            " values ('" + removedMessages.getId() +
+                                            "','" + removedMessages.getMessage() +
+                                            "','" + removedMessages.getSendOrReceive() +
+                                            "','" + removedMessages.getTimeSent() + "');" );
+                                    /* ***/
                                 } )
                                 .show();
                     });
