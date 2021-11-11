@@ -1,5 +1,8 @@
 package algonquin.cst2335.moul0076;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,18 +30,37 @@ public class ChatRoom extends AppCompatActivity
     Button sendButton;
     Button receiveButton;
     EditText chatMessage;
-    RecyclerView chatList;
 
 
     ArrayList<ChatMessage> messages = new ArrayList<>();
-
     MyChatAdapter adt = new MyChatAdapter();
+    RecyclerView chatList;
+
+
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.chatlayout);
+
+        MyOpenHelper opener = new MyOpenHelper(this);
+        SQLiteDatabase db = opener.getWritableDatabase();
+        Cursor result = db.rawQuery( "Select * from " +MyOpenHelper.TABLE_NAME + ";", null);
+
+        int _idCol = result.getColumnIndex( "_id");
+        int messageCol = result.getColumnIndex( MyOpenHelper.col_message );
+        int sendCol = result.getColumnIndex( MyOpenHelper.col_send_receive);
+        int timeCol = result.getColumnIndex( MyOpenHelper.col_time_sent);
+
+        while (result.moveToNext() )
+        {
+            long id = result.getInt( _idCol );
+            String message = result.getString( messageCol);
+            String time = result.getString( timeCol);
+            int sendOrReceive = result.getInt( sendCol);
+            messages.add( new ChatMessage(message, sendOrReceive, time, id) );
+        }
 
         chatList = findViewById(R.id.myrecycler);
         chatList.setAdapter(new MyChatAdapter()  );
@@ -47,51 +69,61 @@ public class ChatRoom extends AppCompatActivity
         receiveButton = findViewById(R.id.receiveButton);
         chatMessage = findViewById(R.id.chatText);
 
-        MyOpenHelper opener = new MyOpenHelper();
-
         chatList.setLayoutManager(new LinearLayoutManager(this));
-
         chatList.setAdapter(adt);
         chatList.setLayoutManager(new LinearLayoutManager(this));
+
 
 
         sendButton.setOnClickListener( click ->
         {
             String whatIsTyped = chatMessage.getText().toString();
             Date timeNow = new Date();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-
-            String currentDateandTime = sdf.format(timeNow);
+            String currentDateAndTime = timeNow.toString();
 
             ///* 1 for Send, 2 for Receive */
-            ChatMessage thisMessage = new ChatMessage( whatIsTyped, 1, currentDateandTime );
+            ChatMessage thisMessage = new ChatMessage( whatIsTyped, 1, currentDateAndTime );
+
+            //week 7 stuff below
+            ContentValues newRow = new ContentValues();
+
+            newRow.put( MyOpenHelper.col_message, thisMessage.getMessage() );
+            newRow.put( MyOpenHelper.col_send_receive, thisMessage.getSendOrReceive() );
+            newRow.put( MyOpenHelper.col_time_sent, thisMessage.getTimeSent() );
+
+            long newID = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
+
+            thisMessage.setId(newID);
 
             //adding a new message to our history
             messages.add(thisMessage);
-
             adt.notifyItemInserted(messages.size() -1);
-
-            chatMessage.setText( "" );
+            chatMessage.setText( "" ); //clear the chat box
         });
 
         receiveButton.setOnClickListener( click ->
         {
             String whatIsTyped = chatMessage.getText().toString();
             Date timeNow = new Date();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
-
-            String currentDateandTime = sdf.format(timeNow);
+            String currentDateAndTime = timeNow.toString();
 
             ///* 1 for Send, 2 for Receive */
-            ChatMessage thisMessage = new ChatMessage( whatIsTyped, 2, currentDateandTime );
+            ChatMessage thisMessage = new ChatMessage( whatIsTyped, 2, currentDateAndTime );
+
+            //week 7 stuff below
+            ContentValues newRow = new ContentValues();
+
+            newRow.put( MyOpenHelper.col_message, thisMessage.getMessage() );
+            newRow.put( MyOpenHelper.col_send_receive, thisMessage.getSendOrReceive() );
+            newRow.put( MyOpenHelper.col_time_sent, thisMessage.getTimeSent() );
+
+            long newID = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
+
+            thisMessage.setId(newID);
 
             //adding a new message to our history
             messages.add(thisMessage);
-
             adt.notifyItemInserted(messages.size() -1);
-
             chatMessage.setText( "" );
         });
 
@@ -180,13 +212,26 @@ public class ChatRoom extends AppCompatActivity
 
     private class ChatMessage
     {
+
         String message;
         int sendOrReceive;
         String timeSent;
+        long id;
+
+        public void setId( long l) { id = l; }
+        public long getId() { return id; }
+
+        public ChatMessage(String message, int sendOrReceive, String timeSent, long id)
+        {
+            this.message = message;
+            this.sendOrReceive = sendOrReceive;
+            this.timeSent = timeSent;
+            setId(id);
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
 
-        String currentDateandTime = sdf.format(new Date());
+        //String currentDateandTime = sdf.format(new Date());
 
         public ChatMessage(String message, int sendOrReceive, String timeSent) {
             this.message = message;
