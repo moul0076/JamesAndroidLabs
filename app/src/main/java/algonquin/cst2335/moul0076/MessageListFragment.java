@@ -128,6 +128,42 @@ public class MessageListFragment extends Fragment
         return chatLayout;
     }
 
+    public void notifyMessageDeleted(ChatMessage chosenMessage, int chosenPostion)
+    {
+        //int position = getAbsoluteAdapterPosition();
+        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+
+
+        builder.setMessage( "Do you want to delete the message: " + chosenMessage.getMessage() );
+        builder.setTitle("Question:");
+        builder.setNegativeButton("No",(dialog, cl) -> { });
+        builder.setPositiveButton("Yes",(dialog, cl) ->
+        {
+            ChatMessage removedMessages = messages.get(chosenPostion);
+            messages.remove(chosenPostion);
+            adt.notifyItemRemoved(chosenPostion);
+            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[] { Long.toString( removedMessages.getId() ) } );
+
+            Snackbar.make(sendButton, "You Deleted Message #" + chosenPostion, Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", clk ->
+                    {
+                        messages.add(chosenPostion, removedMessages);
+                        adt.notifyItemInserted(chosenPostion);
+
+
+                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME +
+                                " values ('" + removedMessages.getId() +
+                                "','" + removedMessages.getMessage() +
+                                "','" + removedMessages.getSendOrReceive() +
+                                "','" + removedMessages.getTimeSent() + "');" );
+
+                    } )
+                    .show();
+        });
+        builder.create().show();
+
+    }
+
     private class MyRowViews extends RecyclerView.ViewHolder
     {
         TextView messageText;
@@ -136,40 +172,17 @@ public class MessageListFragment extends Fragment
         public MyRowViews( View itemView) {
             super(itemView);
 
-
             itemView.setOnClickListener( click ->
                     {
+                        ChatRoom parentActivity = (ChatRoom)getContext();
                         int position = getAbsoluteAdapterPosition();
-                        AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
+                        parentActivity.userClickedMessage( messages.get(position), position);
 
+                        /*
+                        //This was done for just the phone
 
-                        builder.setMessage( "Do you want to delete the message: " + messageText.getText() );
-                        builder.setTitle("Question:");
-                        builder.setNegativeButton("No",(dialog, cl) -> { });
-                        builder.setPositiveButton("Yes",(dialog, cl) ->
-                        {
-                            ChatMessage removedMessages = messages.get(position);
-                            messages.remove(position);
-                            adt.notifyItemRemoved(position);
-                            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[] { Long.toString( removedMessages.getId() ) } );
+                         */
 
-                            Snackbar.make(messageText, "You Deleted Message #" + position, Snackbar.LENGTH_LONG)
-                                    .setAction("UNDO", clk ->
-                                    {
-                                        messages.add(position, removedMessages);
-                                        adt.notifyItemInserted(position);
-
-                                        /* */
-                                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME +
-                                                " values ('" + removedMessages.getId() +
-                                                "','" + removedMessages.getMessage() +
-                                                "','" + removedMessages.getSendOrReceive() +
-                                                "','" + removedMessages.getTimeSent() + "');" );
-                                        /* ***/
-                                    } )
-                                    .show();
-                        });
-                        builder.create().show();
 
                     }
             );
@@ -177,6 +190,8 @@ public class MessageListFragment extends Fragment
             messageText = itemView.findViewById(R.id.message);
             timeText = itemView.findViewById(R.id.time);
         }
+
+
     }
 
     private class MyChatAdapter extends RecyclerView.Adapter<MyRowViews>
@@ -219,7 +234,7 @@ public class MessageListFragment extends Fragment
         }
     }
 
-    private class ChatMessage
+    public class ChatMessage
     {
 
         String message;
@@ -260,4 +275,7 @@ public class MessageListFragment extends Fragment
             return timeSent;
         }
     }
+
+
+
 }

@@ -14,5 +14,7 @@
     <string name="receiveButton">RECEIVE</string>
     <string name="autoFillHint">Message</string>
 
+    <string name="deleteButton">DELETE</string>
+    <string name="closeButton">CLOSE</string>
 
 </resources>
