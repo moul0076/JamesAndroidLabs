@@ -11,7 +11,7 @@
     android:background="@color/my_primary">
 </FrameLayout>
 <FrameLayout
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/detailsRoom"
     android:background="@color/my_secondary">
