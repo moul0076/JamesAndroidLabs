@@ -3,4 +3,14 @@
     <string name="hello_message">Type your password</string>f
     <string name="button_message">Login</string>
 
+    <string name="city_name">Type in the name of a city: </string>
+    <string name="city_hint">Type in City name here</string>
+    <string name="Forecast_Label">GET FORECAST</string>
+    <string name="temp_here">Temp goes here</string>
+    <string name="Max_here">Max Goes here</string>
+    <string name="Min_here">Min Goes here</string>
+    <string name="humidity">Humidity goes here</string>
+    <string name="description_here">Description goes here</string>
+    <string name="weather_icon">Weather Icon</string>
+
 </resources>

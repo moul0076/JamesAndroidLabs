@@ -2,187 +2,150 @@ package algonquin.cst2335.moul0076;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.*;
 
-import java.util.Locale;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-/** Week 06: Unit Test
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+/** Week 09: Connect to a server
  *  CST2335_010 Mobile Graphical Interface
- *  This is the week 6 lab for mobile graphical interface
- *  The requirements for the this program are to perform a
- *  check on a passwords complexity and show understanding of
- *  how to write JavaDocs
  *
  * @author James Mouland
  * @version 1.0
  */
+
+/**
+ * What is needed to connect to a Server
+ * URL url = new URL("The server URL");
+ * HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+ * InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+ */
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The bollean Variable valid is used to store if the
-     * checked is complex enough
-     * a True value indicates enough complexity
-     * a False value indicated not enough complexity
-     */
     boolean valid = false;
+    private String stringURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * The variable tv holds the TextVeiw id textView
-         * This text field provides the starting information
-         * as well as will be used to provided the feed to the
-         * user on the password complexity
-         */
-        TextView tv = findViewById(R.id.textView);
+        Button forecastBtn = findViewById(R.id.forecastButton);
+        EditText cityText = findViewById(R.id.cityTextField);
 
-        /**
-         * The variable et holds the EditText id editText
-         * This is the text feild where the user will enter the
-         * password they wish to check for complexity
-         */
-        EditText et = findViewById(R.id.editText);
-
-        /**
-         * The variable btn holds the Button id button
-         * This button will be activate the function
-         * checkPasswordComplexity(String string)
-         */
-        Button btn = findViewById(R.id.button);
-
-        /**
-         * this button purpose is to activate the
-         * method checkPasswordComplexity(String string)
-         */
-        btn.setOnClickListener( clk ->
+        forecastBtn.setOnClickListener( (click) ->
         {
-            String password = et.getText().toString();
-
-            valid = checkPasswordComplexity(password);
-
-            if (valid == true)
+            Executor newThread = Executors.newSingleThreadExecutor();
+            newThread.execute( () ->
+        {
+            /* This runs in a separate thread */
+            try
             {
-                tv.setText("Your password is complex enough");
+                String cityName = cityText.getText().toString();
+                String temp = URLEncoder.encode(cityName,"UTF-8");
+                //My API key is d6acb109ae5d19a9953c652a8ecf682e  keeps saying invalid key
+                //Class API key is 7e943c97096a9784391a981c4d878b22
+                stringURL = "https://api.openweathermap.org/data/2.5/weather?q="
+                        + URLEncoder.encode(cityName,"UTF-8")
+                        +"&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+
+                URL url = new URL(stringURL);
+                //URL url = new URL(stringURL);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                String text = (new BufferedReader(
+                        new InputStreamReader(in, StandardCharsets.UTF_8)))
+                        .lines()
+                        .collect(Collectors.joining("\n"));
+
+                JSONArray weatherArray = theDocument.getJSONArray ("weather");
+                JSONObject position0 = weatherArray.getJSONObject(0);
+
+                String description = position0.getString("descritpion");
+                String iconName = position0.getString("icon");
+
+                JSONObject mainObject = theDocument.getJSONObject("main");
+                double current = mainObject.getDouble("temp");
+                double min = mainObject.getDouble("temp_min");
+                double max = mainObject.getDouble("temp_max");
+                double humitidy = mainObject.getInt("humidity");
+
+                TextView tv = findViewById(R.id.temp);
+                tv.setText("The current temperature is " + current);
+                tv.setVisibility(View.VISIBLE);
+
+                tv = findViewById(R.id.minTemp);
+                tv.setText("The minimum temperature is " + current);
+                tv.setVisibility(View.VISIBLE);
+
+                tv = findViewById(R.id.maxTemp);
+                tv.setText("The maximum temperature is " + current);
+                tv.setVisibility(View.VISIBLE);
+
+                tv = findViewById(R.id.humitidy);
+                tv.setText("The minimum temperature is " + current);
+                tv.setVisibility(View.VISIBLE);
+
+
+                Bitmap image = null;
+                URL imgUrl = new URL("https://openweathermap.org/img/w/"+ iconName +".png");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                int responseCode = connection.getResponseCode();
+                if (responseCode == 200)
+                {
+                    image = BitmapFactory.decodeStream(connection.getInputStream());
+
+                    ImageView iv = findViewById(R.id.icon);
+                    iv.setImageBitmap(image);
+                }
+
+                FileOutputStream fOUt = null;
+                try {
+                    fOUt = openFileOutput( iconName + ".png", Context.MODE_PRIVATE);
+                    image.compress(Bitmap.CompressFormat.PNG, 100, fOUt);
+                    fOUt.flush();
+                    fOUt.close();
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
             }
-            else
+            catch (IOException ioe)
             {
-                tv.setText("You shall not pass!");
+                Log.e("Connection Error", ioe.getMessage());
             }
+        } );
         });
 
 
     }
 
-    /** This function will check the complexity of the password
-     * if the password is found to missing an uppercase, lowercase, digit or special
-     * character. The user will recieve a popup notification that corosponds to the missing
-     * complexity. Checking each one in order.
-     *
-     * @param pw The String object that we are checking
-     * @return Returns true if the string checked is complex enough
-     */
-    public boolean checkPasswordComplexity(String pw)
-    {
-        /**
-         * The boolean vairables for foundUpperCase, foundLowerCase, foundNumber, foundSpecial
-         * are used to store True or False for if an UpperCase, LowerCase, Number or Special character
-         * was found in the string checked
-         */
-        boolean foundUpperCase, foundLowerCase, foundNumber, foundSpecial;
-
-        /**
-         * Declaring the lenght of the Toast as short
-         */
-        int duration = Toast.LENGTH_SHORT;
-
-        /**
-         * Setting the boolean foundUpperCase, foundLowerCase, foundNumber, foundSpecial to false
-         */
-        foundUpperCase = foundLowerCase = foundNumber = foundSpecial = false;
-
-        /**
-         * Declairing the currentChar as character.
-         */
-        char currentChar;
-
-        for (int f=0; f < pw.length(); f++)
-        {
-            currentChar = pw.charAt(f);
-
-            if ( Character.isUpperCase(currentChar) )
-            {
-                foundUpperCase = true;
-            }
-            else if(Character.isLowerCase(currentChar))
-            {
-                foundLowerCase = true;
-            }
-            else if(Character.isDigit(currentChar))
-            {
-                foundNumber = true;
-            }
-            else if(isSpecialCharacter(currentChar))
-            {
-                foundSpecial = true;
-            }
-        }
-
-        if (!foundUpperCase)
-        {
-            Toast.makeText(MainActivity.this, "You are missing an upper case letter", duration).show();
-            return false;
-        }
-        else if (!foundLowerCase)
-        {
-            Toast.makeText( MainActivity.this, "You are missing a lower case letter", duration ).show();
-            return false;
-        }
-        else if (!foundNumber)
-        {
-            Toast.makeText( MainActivity.this, "You are missing a numeric digit", duration ).show();
-            return false;
-        }
-        else if (!foundSpecial)
-        {
-            Toast.makeText( MainActivity.this, "You are missing a special character #$%^&*!@?", duration ).show();
-            return false;
-        } else
-            return true; //only get here if they're all true
-
-    }
-
-    /** This is a function that will check a single character if one of the following
-     * special characters #$%^&*!@? is present.
-     *
-     * @param c The character to be checked
-     * @return returns true if one of the special characters is present, returns false if no
-     * special character is found
-     */
-    boolean isSpecialCharacter(char c)
-    {
-        switch (c)
-        {
-            case '!':
-            case '@':
-            case '#':
-            case '$':
-            case '%':
-            case '^':
-            case '&':
-            case '*':
-            case '?':
-                return true;
-            default:
-                return false;
-        }
-    }
 
 }
