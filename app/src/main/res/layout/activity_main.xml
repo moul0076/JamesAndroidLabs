@@ -56,7 +56,7 @@
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/humitidy"
+        android:id="@+id/humidity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/humidity"
@@ -71,8 +71,8 @@
 
     <ImageView
         android:id="@id/icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:contentDescription="@string/weather_icon"
         android:visibility="invisible" />
     <!--Button required self closing tag other wise gave

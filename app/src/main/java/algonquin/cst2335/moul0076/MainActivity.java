@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.util.*;
 
 import org.json.JSONArray;
@@ -30,7 +28,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -102,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     double current = mainObject.getDouble("temp");
                     double min = mainObject.getDouble("temp_min");
                     double max = mainObject.getDouble("temp_max");
-                    double humitidy = mainObject.getInt("humidity");
+                    double humidity = mainObject.getInt("humidity");
 
 
 
@@ -114,10 +111,11 @@ public class MainActivity extends AppCompatActivity {
                     if (responseCode == 200)
                     {
                         image = BitmapFactory.decodeStream(connection.getInputStream());
-
-                        ImageView iv = findViewById(R.id.icon);
-                        iv.setImageBitmap(image);
+                        //everything work execpt for image = null at this point
+                        Bitmap test = image;
                     }
+
+                    final Bitmap mainImage = image;
 
                     FileOutputStream fOUt = null;
                     try {
@@ -130,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     }catch ( NullPointerException e){
                         e.printStackTrace();
                     }
+
+
 
                     runOnUiThread( (  )  -> {
                         TextView tv = findViewById(R.id.temp);
@@ -144,13 +144,17 @@ public class MainActivity extends AppCompatActivity {
                         tv.setText("The maximum temperature is " + max);
                         tv.setVisibility(View.VISIBLE);
 
-                        tv = findViewById(R.id.humitidy);
-                        tv.setText("The minimum temperature is " + humitidy);
+                        tv = findViewById(R.id.humidity);
+                        tv.setText("The humidity is " + humidity);
                         tv.setVisibility(View.VISIBLE);
 
-                    //    ImageView iv = findViewById(R.id.icon);
-                    //    iv.setImageBitmap(image);
-                    //    iv.setVisibility(View.VISIBLE);
+                        tv = findViewById(R.id.description);
+                        tv.setText( description );
+                        tv.setVisibility(View.VISIBLE);
+
+                        ImageView iv = findViewById(R.id.icon);
+                        iv.setImageBitmap(mainImage);
+                        iv.setVisibility(View.VISIBLE);
                     });
 
 
