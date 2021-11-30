@@ -1,5 +1,7 @@
 package algonquin.cst2335.moul0076;
 
+
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         +"&appid=7e943c97096a9784391a981c4d878b22&units=metric";
 
                 URL url = new URL(stringURL);
-                //URL url = new URL(stringURL);
+
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         new InputStreamReader(in, StandardCharsets.UTF_8)))
                         .lines()
                         .collect(Collectors.joining("\n"));
-                //JSONArray theArray = new JSONArray( text );
+
                 try {
                     JSONObject theDocument = new JSONObject(text);
                     JSONArray weatherArray = theDocument.getJSONArray ("weather");
@@ -101,17 +103,17 @@ public class MainActivity extends AppCompatActivity {
                     double max = mainObject.getDouble("temp_max");
                     double humidity = mainObject.getInt("humidity");
 
-
-
                     Bitmap image = null;
                     URL imgUrl = new URL("https://openweathermap.org/img/w/"+ iconName +".png");
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    //URL imgUrl = new URL("https://www.pngitem.com/pimgs/m/177-1771444_transparent-dnd-png-d-d-5e-cleric-forge.png");
+                    HttpURLConnection connection = (HttpURLConnection) imgUrl.openConnection();
                     connection.connect();
                     int responseCode = connection.getResponseCode();
                     if (responseCode == 200)
                     {
                         image = BitmapFactory.decodeStream(connection.getInputStream());
-                        //everything work execpt for image = null at this point
+                        //everything work execpt for BitmapFactory.decodeStream is returning a null
+                        //Bitmap test = image; is to see what is stored in the variable image
                         Bitmap test = image;
                     }
 
