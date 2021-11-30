@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                         image = BitmapFactory.decodeStream(connection.getInputStream());
                         //everything work execpt for BitmapFactory.decodeStream is returning a null
                         //Bitmap test = image; is to see what is stored in the variable image
-                        Bitmap test = image;
                     }
 
                     final Bitmap mainImage = image;
