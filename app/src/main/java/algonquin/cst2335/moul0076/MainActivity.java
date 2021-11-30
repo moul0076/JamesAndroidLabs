@@ -85,57 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                JSONArray weatherArray = theDocument.getJSONArray ("weather");
-                JSONObject position0 = weatherArray.getJSONObject(0);
 
-                String description = position0.getString("descritpion");
-                String iconName = position0.getString("icon");
-
-                JSONObject mainObject = theDocument.getJSONObject("main");
-                double current = mainObject.getDouble("temp");
-                double min = mainObject.getDouble("temp_min");
-                double max = mainObject.getDouble("temp_max");
-                double humitidy = mainObject.getInt("humidity");
-
-                TextView tv = findViewById(R.id.temp);
-                tv.setText("The current temperature is " + current);
-                tv.setVisibility(View.VISIBLE);
-
-                tv = findViewById(R.id.minTemp);
-                tv.setText("The minimum temperature is " + current);
-                tv.setVisibility(View.VISIBLE);
-
-                tv = findViewById(R.id.maxTemp);
-                tv.setText("The maximum temperature is " + current);
-                tv.setVisibility(View.VISIBLE);
-
-                tv = findViewById(R.id.humitidy);
-                tv.setText("The minimum temperature is " + current);
-                tv.setVisibility(View.VISIBLE);
-
-
-                Bitmap image = null;
-                URL imgUrl = new URL("https://openweathermap.org/img/w/"+ iconName +".png");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-                int responseCode = connection.getResponseCode();
-                if (responseCode == 200)
-                {
-                    image = BitmapFactory.decodeStream(connection.getInputStream());
-
-                    ImageView iv = findViewById(R.id.icon);
-                    iv.setImageBitmap(image);
-                }
-
-                FileOutputStream fOUt = null;
-                try {
-                    fOUt = openFileOutput( iconName + ".png", Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.PNG, 100, fOUt);
-                    fOUt.flush();
-                    fOUt.close();
-                } catch (FileNotFoundException e){
-                    e.printStackTrace();
-                }
             }
             catch (IOException ioe)
             {
