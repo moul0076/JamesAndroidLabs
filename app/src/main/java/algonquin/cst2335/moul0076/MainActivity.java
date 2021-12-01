@@ -1,7 +1,6 @@
 package algonquin.cst2335.moul0076;
 
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -18,6 +17,9 @@ import android.util.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -68,20 +72,72 @@ public class MainActivity extends AppCompatActivity {
             newThread.execute( () ->
         {
             /* This runs in a separate thread */
-            try
-            {
+            try {
                 String cityName = cityText.getText().toString();
                 String temp = URLEncoder.encode(cityName,"UTF-8");
                 //My API key is d6acb109ae5d19a9953c652a8ecf682e  keeps saying invalid key
                 //Class API key is 7e943c97096a9784391a981c4d878b22
                 stringURL = "https://api.openweathermap.org/data/2.5/weather?q="
                         + URLEncoder.encode(cityName,"UTF-8")
-                        +"&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+                        +"&appid=d6acb109ae5d19a9953c652a8ecf682e&units=metric&mode=xml";
 
                 URL url = new URL(stringURL);
-
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                /**
+                 * XML parser
+                 */
+                /*
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput(in, "UTF-8");
+                */
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput( in  , "UTF-8");
+
+
+                String descriptionXML = null;
+                String iconName = null;
+                String currentXML = null;
+                String minXML = null;
+                String maxXML = null;
+                String humidityXML = null;
+
+                int eventType = xpp.next();
+
+                while (xpp.next() != XmlPullParser.END_DOCUMENT)
+                {
+                    switch ( xpp.getEventType() )
+                    {
+                        case XmlPullParser.START_TAG:
+                            if(xpp.getName().equals("temperature"))
+                            {
+                                currentXML = xpp.getAttributeValue(null, "value");
+                                minXML = xpp.getAttributeValue(null, "min");
+                                maxXML = xpp.getAttributeValue(null, "max");
+                            }
+                            else if (xpp.getName().equals("weather"))
+                            {
+                                descriptionXML = xpp.getAttributeValue(null, "value");
+                                iconName = xpp.getAttributeValue(null, "icon");
+                            }
+                            else if (xpp.getName().equals("humidity"))
+                            {
+                                humidityXML = xpp.getAttributeValue(null, "humidity");
+                            }
+                            break;
+                        case XmlPullParser.END_TAG:
+
+                            break;
+                        case XmlPullParser.TEXT:
+
+                            break;
+                    }
+                }
 
                 String text = (new BufferedReader(
                         new InputStreamReader(in, StandardCharsets.UTF_8)))
@@ -89,34 +145,38 @@ public class MainActivity extends AppCompatActivity {
                         .collect(Collectors.joining("\n"));
 
                 try {
-                    JSONObject theDocument = new JSONObject(text);
-                    JSONArray weatherArray = theDocument.getJSONArray ("weather");
-                    JSONObject position0 = weatherArray.getJSONObject(0);
+                    //JSONObject theDocument = new JSONObject(text);
+                    //JSONArray weatherArray = theDocument.getJSONArray ("weather");
+                    //JSONObject position0 = weatherArray.getJSONObject(0);
 
-                    String description = position0.getString("description");
-                    String iconName = position0.getString("icon");
+                    //String description = position0.getString("description");
+                    //String iconName = position0.getString("icon");
 
-                    JSONObject mainObject = theDocument.getJSONObject("main");
+                    //JSONObject mainObject = theDocument.getJSONObject("main");
 
-                    double current = mainObject.getDouble("temp");
-                    double min = mainObject.getDouble("temp_min");
-                    double max = mainObject.getDouble("temp_max");
-                    double humidity = mainObject.getInt("humidity");
+                    //double current = mainObject.getDouble("temp");
+                    //double min = mainObject.getDouble("temp_min");
+                    //double max = mainObject.getDouble("temp_max");
+                    //double humidity = mainObject.getInt("humidity");
 
                     Bitmap image = null;
                     URL imgUrl = new URL("https://openweathermap.org/img/w/"+ iconName +".png");
-                    //URL imgUrl = new URL("https://www.pngitem.com/pimgs/m/177-1771444_transparent-dnd-png-d-d-5e-cleric-forge.png");
                     HttpURLConnection connection = (HttpURLConnection) imgUrl.openConnection();
                     connection.connect();
                     int responseCode = connection.getResponseCode();
                     if (responseCode == 200)
                     {
                         image = BitmapFactory.decodeStream(connection.getInputStream());
-                        //everything work execpt for BitmapFactory.decodeStream is returning a null
-                        //Bitmap test = image; is to see what is stored in the variable image
+
                     }
 
                     final Bitmap mainImage = image;
+                    final String current = currentXML;
+                    final String min = minXML;
+                    final String max = maxXML;
+                    final String humidity = humidityXML;
+                    final String description = descriptionXML;
+
 
                     FileOutputStream fOUt = null;
                     try {
@@ -159,13 +219,11 @@ public class MainActivity extends AppCompatActivity {
                     });
 
 
-
-
-                }catch (JSONException je)
+                }catch (UnsupportedEncodingException e)
                 {
-                    Log.e("JSON error", je.getMessage());
+                    Log.e("JSON error", "UnsupportedEncodingException");
                 }
-
+                /* */
 
 
 
@@ -176,11 +234,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 Log.e("Connection Error", ioe.getMessage());
             }
+            catch (XmlPullParserException e)
+            {
+                e.printStackTrace();
+            }
         } );
         });
-
-
     }
-
-
 }
