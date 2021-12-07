@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -35,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cityTextField" />
 
     <TextView
-        android:id="@+id/temp"
+        android:id="@+id/currentTemp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/temp_here"

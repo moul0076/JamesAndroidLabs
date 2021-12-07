@@ -16,5 +16,8 @@ never used warning-->
         <!-- Text color -->
         <item name="android:textColor">@color/my_text</item>
 
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
     </style>
 </resources>
