@@ -2,8 +2,11 @@ package algonquin.cst2335.moul0076;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.*;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -124,17 +129,27 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
-        //Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        //setSupportActionBar();
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,myToolbar,R.string.open,R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         Button forecastBtn = findViewById(R.id.forecastButton);
         EditText cityField = findViewById(R.id.cityTextField);
 
-        //JSONObject theDocument;
+        NavigationView navigationView = findViewById(R.id.popuout_menu);
+        navigationView.setNavigationItemSelectedListener( (item) ->
+        {
+            onOptionsItemSelected(item);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
+        });
 
         forecastBtn.setOnClickListener( (click) ->
         {

@@ -12,5 +12,7 @@
     <string name="humidity">Humidity goes here</string>
     <string name="description_here">Description goes here</string>
     <string name="weather_icon">Weather Icon</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
 </resources>

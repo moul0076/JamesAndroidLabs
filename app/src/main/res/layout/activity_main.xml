@@ -4,14 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/toolbar"/>
+
+
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -28,7 +39,7 @@
         android:ems="10"
         android:hint="@string/city_hint"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
@@ -37,7 +48,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Forecast_Label"
         android:textColor="#263238"
-        app:layout_constraintStart_toStartOf="@+id/cityTextField"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cityTextField" />
 
     <TextView
@@ -45,43 +56,70 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/temp_here"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forecastButton" />
 
     <TextView
         android:id="@+id/maxTemp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Max_here"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minTemp" />
 
     <TextView
         android:id="@+id/minTemp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Min_here"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentTemp" />
 
     <TextView
         android:id="@+id/humidity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/humidity"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxTemp" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/description_here"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
 
     <ImageView
         android:id="@id/icon"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:contentDescription="@string/weather_icon"
-        android:visibility="invisible" />
-    <!--Button required self closing tag other wise gave
-     error XML tag has empty body-->
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/humidity" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<com.google.android.material.navigation.NavigationView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/popuout_menu"
+
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+
+    app:headerLayout="@layout/popout_header"
+    app:menu="@menu/main_activity_actions"
+/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>
