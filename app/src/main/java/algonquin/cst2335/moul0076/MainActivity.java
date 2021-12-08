@@ -72,19 +72,15 @@ public class MainActivity extends AppCompatActivity {
             {
                 String cityName = cityText.getText().toString();
                 String temp = URLEncoder.encode(cityName,"UTF-8");
-                //My API key is d6acb109ae5d19a9953c652a8ecf682e  keeps saying invalid key
-                //Class API key is 7e943c97096a9784391a981c4d878b22
                 stringURL = "https://api.openweathermap.org/data/2.5/weather?q="
                         + URLEncoder.encode(cityName,"UTF-8")
                         +"&appid=7e943c97096a9784391a981c4d878b22&units=metric";
 
                 URL url = new URL(stringURL);
-
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-                String text = (new BufferedReader(
-                        new InputStreamReader(in, StandardCharsets.UTF_8)))
+                String text = (new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)))
                         .lines()
                         .collect(Collectors.joining("\n"));
 
