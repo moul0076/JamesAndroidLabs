@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/selen/AndroidStudioProjects/JamesAndroidLabs/app/src/main/res/layout-sw600dp/empty_layout.xml" value="0.275" />
         <entry key="..\:/Users/selen/AndroidStudioProjects/JamesAndroidLabs/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/selen/AndroidStudioProjects/JamesAndroidLabs/app/src/main/res/layout/chatlayout.xml" value="0.2361111111111111" />
+        <entry key="..\:/Users/selen/AndroidStudioProjects/JamesAndroidLabs/app/src/main/res/layout/details_layout.xml" value="0.32592592592592595" />
+        <entry key="..\:/Users/selen/AndroidStudioProjects/JamesAndroidLabs/app/src/main/res/layout/empty_layout.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/selen/AndroidStudioProjects/JamesAndroidLabs/app/src/main/res/layout/sent_message.xml" value="0.32592592592592595" />
       </map>
     </option>
