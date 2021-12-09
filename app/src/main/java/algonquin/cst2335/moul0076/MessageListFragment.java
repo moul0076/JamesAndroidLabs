@@ -41,7 +41,6 @@ public class MessageListFragment extends Fragment
     {
         View chatLayout = inflater.inflate(R.layout.chatlayout, container, false);
         MyOpenHelper opener = new MyOpenHelper(getContext());
-        //SQLiteDatabase db = this.db;
         db = opener.getWritableDatabase();
 
         Cursor result = db.rawQuery( "Select * from " +MyOpenHelper.TABLE_NAME + ";", null);
