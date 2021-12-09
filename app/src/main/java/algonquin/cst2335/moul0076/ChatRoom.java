@@ -60,7 +60,6 @@ public class ChatRoom extends AppCompatActivity
             Date timeNow = new Date();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-
             String currentDateandTime = sdf.format(timeNow);
 
             ///* 1 for Send, 2 for Receive */
